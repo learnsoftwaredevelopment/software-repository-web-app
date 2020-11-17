@@ -87,7 +87,7 @@ const ResetPasswordForm = () => {
               </Form.Control.Feedback>
             </Form.Group>
             <Button disabled={isLoading} variant="primary" type="submit">
-              {isLoading ? 'Loading...' : 'Reset Password'}
+              {isLoading ? 'Loading' : 'Reset Password'}
             </Button>
           </Form>
         </Card.Body>

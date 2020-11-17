@@ -1,15 +1,59 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Form, Button, Card } from 'react-bootstrap';
+import { Link, useHistory } from 'react-router-dom';
+import {
+  Form, Button, Card, Alert,
+} from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
+import { useAuth } from '../../contexts/auth/Auth.context';
 
 const LoginForm = () => {
   const [validated, setValidated] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [notification, setNotification] = useState('');
+  const [notificationType, setNotificationType] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (event) => {
+  const { login } = useAuth();
+
+  const history = useHistory();
+
+  const handleNotification = (message, type = 'primary') => {
+    setNotification(message);
+    setNotificationType(type);
+    setTimeout(() => {
+      setNotification('');
+      setNotificationType('');
+    }, 5000);
+  };
+
+  const handleSubmit = async (event) => {
+    const form = event.currentTarget;
+
     event.preventDefault();
 
-    setValidated(true);
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+      setValidated(true);
+      return false;
+    }
+
+    try {
+      setIsLoading(true);
+      await login(email, password);
+      handleNotification('Login successful.', 'success');
+      history.push('/');
+    } catch (err) {
+      console.log(err);
+      handleNotification('Login not successful.', 'danger');
+    } finally {
+      setIsLoading(false);
+      setEmail('');
+      setPassword('');
+      setValidated(false);
+    }
+
+    return true;
   };
 
   return (
@@ -25,26 +69,42 @@ const LoginForm = () => {
         </div>
         <Card.Body>
           <h2 className="text-center mb-4">Login</h2>
+          {notification && notificationType ? (
+            <Alert variant={notificationType}>{notification}</Alert>
+          ) : null}
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Form.Group controlId="email">
               <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" required />
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                required
+              />
               <Form.Control.Feedback type="invalid">
                 Please input your email.
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="password">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" required />
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                required
+              />
               <Form.Control.Feedback type="invalid">
                 Please input your password.
               </Form.Control.Feedback>
             </Form.Group>
-            <Button variant="primary" type="submit">
-              Login
+            <Button disabled={isLoading} variant="primary" type="submit">
+              {isLoading ? 'Logging In' : 'Login'}
             </Button>
             <div className="mt-2">
-              Forget your password? <Link to="/reset-password">Reset Password</Link>
+              Forget your password?{' '}
+              <Link to="/reset-password">Reset Password</Link>
             </div>
           </Form>
         </Card.Body>

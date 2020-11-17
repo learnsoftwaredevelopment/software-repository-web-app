@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Form, Button, Card } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
 
-const LoginForm = () => {
+const ResetPasswordForm = () => {
   const [validated, setValidated] = useState(false);
 
   const handleSubmit = (event) => {
@@ -24,7 +24,7 @@ const LoginForm = () => {
           />
         </div>
         <Card.Body>
-          <h2 className="text-center mb-4">Login</h2>
+          <h2 className="text-center mb-4">Reset Password</h2>
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Form.Group controlId="email">
               <Form.Label>Email address</Form.Label>
@@ -33,26 +33,16 @@ const LoginForm = () => {
                 Please input your email.
               </Form.Control.Feedback>
             </Form.Group>
-            <Form.Group controlId="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" required />
-              <Form.Control.Feedback type="invalid">
-                Please input your password.
-              </Form.Control.Feedback>
-            </Form.Group>
             <Button variant="primary" type="submit">
-              Login
+              Reset Password
             </Button>
-            <div className="mt-2">
-              Forget your password? <Link to="/reset-password">Reset Password</Link>
-            </div>
           </Form>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-4">
-        New to our website? <Link to="/register">Register</Link>
+        Return to <Link to="/login">Login</Link>
       </div>
     </div>
   );
 };
-export default LoginForm;
+export default ResetPasswordForm;

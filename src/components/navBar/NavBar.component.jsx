@@ -1,16 +1,22 @@
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
+import AiOutlineHome from '@meronex/icons/ai/AiOutlineHome';
+
+import './NavBar.styles.css';
 
 const NavBar = () => (
   <>
     <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
-      <Navbar.Brand href="#home">Software Repository</Navbar.Brand>
+      <Navbar.Brand as={Link} to="/">
+        Software Repository
+      </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link as={NavLink} to="/">
-            Home
+          <Nav.Link as={NavLink} to="/" className="custom-nav-link">
+            <AiOutlineHome />
+            <span className="ml-1">Home</span>
           </Nav.Link>
         </Nav>
         <Nav>

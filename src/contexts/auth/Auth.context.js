@@ -12,13 +12,13 @@ const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const register = async (email, password, displayName = '') => {
+  const register = async (email, password, name = '') => {
     const userCredentials = await auth.createUserWithEmailAndPassword(
       email,
       password,
     );
     await userCredentials.user.updateProfile({
-      displayName,
+      displayName: name,
     });
     await userCredentials.user.sendEmailVerification();
   };

@@ -54,7 +54,7 @@ const RegisterForm = () => {
       );
     } catch (err) {
       console.log(err);
-      handleNotification('Registration not successful', 'danger');
+      handleNotification('Registration not successful.', 'danger');
     } finally {
       setIsLoading(false);
       setUsername('');

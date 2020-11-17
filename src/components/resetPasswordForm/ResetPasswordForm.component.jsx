@@ -1,15 +1,57 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Form, Button, Card } from 'react-bootstrap';
+import {
+  Form, Button, Card, Alert,
+} from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
+import { useAuth } from '../../contexts/auth/Auth.context';
 
 const ResetPasswordForm = () => {
   const [validated, setValidated] = useState(false);
+  const [email, setEmail] = useState('');
+  const [notification, setNotification] = useState('');
+  const [notificationType, setNotificationType] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (event) => {
+  const { resetPassword } = useAuth();
+
+  const handleNotification = (message, type = 'primary') => {
+    setNotification(message);
+    setNotificationType(type);
+    setTimeout(() => {
+      setNotification('');
+      setNotificationType('');
+    }, 5000);
+  };
+
+  const handleSubmit = async (event) => {
+    const form = event.currentTarget;
+
     event.preventDefault();
 
-    setValidated(true);
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+      setValidated(true);
+      return false;
+    }
+
+    try {
+      setIsLoading(true);
+      await resetPassword(email);
+      handleNotification(
+        'Reset Password successful. Please check your inbox for the instructions to reset your password.',
+        'success',
+      );
+    } catch (err) {
+      console.log(err);
+      handleNotification('Reset Password not successful.', 'danger');
+    } finally {
+      setIsLoading(false);
+      setEmail('');
+      setValidated(false);
+    }
+
+    return true;
   };
 
   return (
@@ -25,16 +67,27 @@ const ResetPasswordForm = () => {
         </div>
         <Card.Body>
           <h2 className="text-center mb-4">Reset Password</h2>
+          {notification && notificationType ? (
+            <Alert variant={notificationType}>{notification}</Alert>
+          ) : null}
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Form.Group controlId="email">
               <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" required />
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                value={email}
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                }}
+                required
+              />
               <Form.Control.Feedback type="invalid">
                 Please input your email.
               </Form.Control.Feedback>
             </Form.Group>
-            <Button variant="primary" type="submit">
-              Reset Password
+            <Button disabled={isLoading} variant="primary" type="submit">
+              {isLoading ? 'Loading...' : 'Reset Password'}
             </Button>
           </Form>
         </Card.Body>

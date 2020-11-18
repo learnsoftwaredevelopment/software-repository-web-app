@@ -6,19 +6,27 @@ import RegisterPage from './pages/registerPage/RegisterPage.component';
 import Footer from './components/footer/Footer.component';
 import ResetPasswordPage from './pages/resetPasswordPage/ResetPasswordPage.component';
 import { AuthProvider } from './contexts/auth/Auth.context';
+import ProfilePage from './pages/profilePage/ProfilePage.component';
+
+import './App.css';
 
 function App() {
   return (
     <div>
       <AuthProvider>
-        <NavBar />
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/register" component={RegisterPage} />
-          <Route exact path="/reset-password" component={ResetPasswordPage} />
-        </Switch>
-        <Footer />
+        <div className="content">
+          <NavBar />
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/register" component={RegisterPage} />
+            <Route exact path="/reset-password" component={ResetPasswordPage} />
+            <Route exact path="/profile" component={ProfilePage} />
+          </Switch>
+        </div>
+        <div className="d-flex align-items-center footer">
+          <Footer />
+        </div>
       </AuthProvider>
     </div>
   );

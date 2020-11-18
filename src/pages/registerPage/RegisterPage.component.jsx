@@ -4,9 +4,9 @@ import Col from 'react-bootstrap/Col';
 import RegisterForm from '../../components/registerForm/RegisterForm.component';
 
 const RegisterPage = () => (
-  <Container className="d-flex align-items-center justify-content-center min-vh-100">
-    <Row className="w-50">
-      <Col>
+  <Container>
+    <Row className="justify-content-center mt-5">
+      <Col md={8} xl={6}>
         <RegisterForm />
       </Col>
     </Row>

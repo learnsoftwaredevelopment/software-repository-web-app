@@ -70,7 +70,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <div>
+    <>
       <Card>
         <div className="d-flex align-items-center justify-content-center mt-5 mb-2">
           <Image
@@ -179,7 +179,7 @@ const RegisterForm = () => {
       <div className="w-100 text-center mt-4">
         Already have an Account? <Link to="/login">Login</Link>
       </div>
-    </div>
+    </>
   );
 };
 export default RegisterForm;

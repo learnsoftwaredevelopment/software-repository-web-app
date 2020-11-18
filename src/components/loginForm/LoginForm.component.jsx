@@ -57,7 +57,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div>
+    <>
       <Card>
         <div className="d-flex align-items-center justify-content-center mt-5 mb-2">
           <Image
@@ -112,7 +112,7 @@ const LoginForm = () => {
       <div className="w-100 text-center mt-4">
         New to our website? <Link to="/register">Register</Link>
       </div>
-    </div>
+    </>
   );
 };
 export default LoginForm;

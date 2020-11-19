@@ -8,7 +8,7 @@ const Notification = () => {
 
   return (
     <div className="text-center fixed-top ml-auto mr-auto mt-5 notification-container">
-      <Alert show={notification} variant={notificationType}>
+      <Alert show={notification !== ''} variant={notificationType}>
         {notification}
       </Alert>
     </div>

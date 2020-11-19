@@ -1,6 +1,7 @@
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import AccountSettings from '../../components/accountSettings/AccountSettings.component';
+import ProfileSettings from '../../components/profileSettings/ProfileSettings.component';
 
 const SettingsPage = () => (
   <>
@@ -9,7 +10,7 @@ const SettingsPage = () => (
         <AccountSettings />
       </Tab>
       <Tab eventKey="profile" title="Profile">
-        <AccountSettings />
+        <ProfileSettings />
       </Tab>
     </Tabs>
   </>

@@ -48,6 +48,11 @@ const AuthProvider = ({ children }) => {
     await userCredential.user.updatePassword(newPassword);
   };
 
+  const updateProfile = (name, photoUrl) => currentUser.updateProfile({
+    displayName: name,
+    photoURL: photoUrl,
+  });
+
   const value = {
     currentUser,
     register,
@@ -55,12 +60,14 @@ const AuthProvider = ({ children }) => {
     logout,
     resetPassword,
     updatePassword,
+    updateProfile,
   };
 
   useEffect(() => {
     const unSubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
       setIsLoading(false);
+      console.log(user);
     });
     // clean up
     return unSubscribe;

@@ -1,33 +1,19 @@
-import { useState, useEffect } from 'react';
-import Alert from 'react-bootstrap/Alert';
+import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import { useAuth } from '../../contexts/auth/Auth.context';
+import { useNotification } from '../../contexts/notification/Notification.context';
 
 const AccountSettings = () => {
   const [validated, setValidated] = useState(false);
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
-  const [notification, setNotification] = useState('');
-  const [notificationType, setNotificationType] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const { updatePassword } = useAuth();
-
-  const handleNotification = (message, type = 'primary') => {
-    setNotification(message);
-    setNotificationType(type);
-  };
-
-  useEffect(() => {
-    const timeOut = setTimeout(() => {
-      setNotification('');
-      setNotificationType('');
-    }, 5000);
-    return () => clearTimeout(timeOut);
-  }, [notification, setNotificationType]);
+  const { handleNotification } = useNotification();
 
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
@@ -71,9 +57,6 @@ const AccountSettings = () => {
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Account Settings</h2>
-          {notification && notificationType ? (
-            <Alert variant={notificationType}>{notification}</Alert>
-          ) : null}
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Form.Group controlId="oldPassword">
               <Form.Label>Old Password</Form.Label>

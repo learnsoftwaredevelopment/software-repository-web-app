@@ -1,32 +1,18 @@
-import { useState, useEffect } from 'react';
-import Alert from 'react-bootstrap/Alert';
+import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import { useAuth } from '../../contexts/auth/Auth.context';
+import { useNotification } from '../../contexts/notification/Notification.context';
 
 const ProfileSettings = () => {
   const { updateProfile, currentUser } = useAuth();
+  const { handleNotification } = useNotification();
 
   const [validated, setValidated] = useState(false);
   const [avatarImageUrl, setAvatarImageUrl] = useState(null);
   const [name, setName] = useState('');
-  const [notification, setNotification] = useState('');
-  const [notificationType, setNotificationType] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
-  const handleNotification = (message, type = 'primary') => {
-    setNotification(message);
-    setNotificationType(type);
-  };
-
-  useEffect(() => {
-    const timeOut = setTimeout(() => {
-      setNotification('');
-      setNotificationType('');
-    }, 5000);
-    return () => clearTimeout(timeOut);
-  }, [notification, setNotificationType]);
 
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
@@ -77,9 +63,6 @@ const ProfileSettings = () => {
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Profile Settings</h2>
-          {notification && notificationType ? (
-            <Alert variant={notificationType}>{notification}</Alert>
-          ) : null}
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Form.Group controlId="username">
               <Form.Label>Username</Form.Label>
@@ -100,8 +83,8 @@ const ProfileSettings = () => {
                 Please input your name.
               </Form.Control.Feedback>
               <Form.Text className="text-muted">
-                You can leave the name unchanged if you do not want to
-                update the name.
+                You can leave the name unchanged if you do not want to update
+                the name.
               </Form.Text>
             </Form.Group>
             <Form.Group controlId="avatarImageUrl">

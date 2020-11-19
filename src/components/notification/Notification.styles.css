@@ -1,0 +1,15 @@
+/* .notification-container {
+  z-index: 1060;
+  min-width: 250px;
+  max-width: 350px;
+} */
+
+.notification-container {
+  width: 300px;
+}
+
+@media (min-width: 768px) {
+  .notification-container {
+    width: 500px;
+  }
+}

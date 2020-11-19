@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Form, Button, Card, Alert,
-} from 'react-bootstrap';
+import { Form, Button, Card } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
 import { useAuth } from '../../contexts/auth/Auth.context';
+import { useNotification } from '../../contexts/notification/Notification.context';
 
 const RegisterForm = () => {
   const [validated, setValidated] = useState(false);
@@ -14,24 +13,10 @@ const RegisterForm = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isTermsChecked, setTermsChecked] = useState(false);
-  const [notification, setNotification] = useState('');
-  const [notificationType, setNotificationType] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const { register } = useAuth();
-
-  const handleNotification = (message, type = 'primary') => {
-    setNotification(message);
-    setNotificationType(type);
-  };
-
-  useEffect(() => {
-    const timeOut = setTimeout(() => {
-      setNotification('');
-      setNotificationType('');
-    }, 5000);
-    return () => clearTimeout(timeOut);
-  }, [notification, setNotificationType]);
+  const { handleNotification } = useNotification();
 
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
@@ -86,9 +71,6 @@ const RegisterForm = () => {
         </div>
         <Card.Body>
           <h2 className="text-center mb-4">Register</h2>
-          {notification && notificationType ? (
-            <Alert variant={notificationType}>{notification}</Alert>
-          ) : null}
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Form.Group controlId="username">
               <Form.Label>Username</Form.Label>

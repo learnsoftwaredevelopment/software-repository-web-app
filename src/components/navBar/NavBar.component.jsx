@@ -54,7 +54,9 @@ const NavBar = () => {
                 <NavDropdown.Item onClick={() => history.push('/profile')}>
                   Profile
                 </NavDropdown.Item>
-                <NavDropdown.Item>Settings</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => history.push('/settings')}>
+                  Settings
+                </NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={handleLogOut}>
                   Logout

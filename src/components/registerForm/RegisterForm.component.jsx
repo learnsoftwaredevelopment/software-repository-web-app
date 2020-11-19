@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Form, Button, Card, Alert,
@@ -23,11 +23,15 @@ const RegisterForm = () => {
   const handleNotification = (message, type = 'primary') => {
     setNotification(message);
     setNotificationType(type);
-    setTimeout(() => {
+  };
+
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
       setNotification('');
       setNotificationType('');
     }, 5000);
-  };
+    return () => clearTimeout(timeOut);
+  }, [notification, setNotificationType]);
 
   const handleSubmit = async (event) => {
     const form = event.currentTarget;

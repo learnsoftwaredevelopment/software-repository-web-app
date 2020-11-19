@@ -9,6 +9,7 @@ import { AuthProvider } from './contexts/auth/Auth.context';
 import ProfilePage from './pages/profilePage/ProfilePage.component';
 
 import './App.css';
+import SettingsPage from './pages/settingsPage/SettingsPage.component';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route exact path="/register" component={RegisterPage} />
             <Route exact path="/reset-password" component={ResetPasswordPage} />
             <Route exact path="/profile" component={ProfilePage} />
+            <Route exact path="/settings" component={SettingsPage} />
           </Switch>
         </div>
         <div className="d-flex align-items-center footer">

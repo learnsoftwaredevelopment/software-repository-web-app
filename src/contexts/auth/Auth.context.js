@@ -2,7 +2,7 @@ import {
   useContext, createContext, useEffect, useState,
 } from 'react';
 import PropTypes from 'prop-types';
-import { auth } from '../../firebase/firebase.utils';
+import { firebase, auth } from '../../firebase/firebase.utils';
 
 const AuthContext = createContext();
 
@@ -25,11 +25,28 @@ const AuthProvider = ({ children }) => {
 
   const login = (email, password) => auth.signInWithEmailAndPassword(email, password);
 
-  const logout = () => {
-    auth.signOut();
+  const logout = async () => {
+    await auth.signOut();
   };
 
   const resetPassword = (email) => auth.sendPasswordResetEmail(email);
+
+  const reauthenticateWithCredential = (email, password) => {
+    const credential = firebase.auth.EmailAuthProvider.credential(
+      email,
+      password,
+    );
+
+    return currentUser.reauthenticateWithCredential(credential);
+  };
+
+  const updatePassword = async (currentPassword, newPassword) => {
+    const userCredential = await reauthenticateWithCredential(
+      currentUser.email,
+      currentPassword,
+    );
+    await userCredential.user.updatePassword(newPassword);
+  };
 
   const value = {
     currentUser,
@@ -37,13 +54,13 @@ const AuthProvider = ({ children }) => {
     login,
     logout,
     resetPassword,
+    updatePassword,
   };
 
   useEffect(() => {
     const unSubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
       setIsLoading(false);
-      console.log(user);
     });
     // clean up
     return unSubscribe;

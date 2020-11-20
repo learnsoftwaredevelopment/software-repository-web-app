@@ -29,6 +29,8 @@ const RegisterForm = () => {
       return false;
     }
 
+    setValidated(false);
+
     if (password !== confirmPassword) {
       handleNotification('Please ensure the password matches.', 'danger');
       return false;
@@ -52,7 +54,6 @@ const RegisterForm = () => {
       setPassword('');
       setConfirmPassword('');
       setTermsChecked(false);
-      setValidated(false);
     }
 
     return true;

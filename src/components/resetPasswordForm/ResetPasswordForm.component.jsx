@@ -24,6 +24,8 @@ const ResetPasswordForm = () => {
       return false;
     }
 
+    setValidated(false);
+
     try {
       setIsLoading(true);
       await resetPassword(email);
@@ -37,7 +39,6 @@ const ResetPasswordForm = () => {
     } finally {
       setIsLoading(false);
       setEmail('');
-      setValidated(false);
     }
 
     return true;

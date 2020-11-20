@@ -27,6 +27,8 @@ const LoginForm = () => {
       return false;
     }
 
+    setValidated(false);
+
     try {
       setIsLoading(true);
       await login(email, password);
@@ -39,7 +41,6 @@ const LoginForm = () => {
       setIsLoading(false);
       setEmail('');
       setPassword('');
-      setValidated(false);
     }
 
     return true;

@@ -3,18 +3,21 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { NavLink, Link, useHistory } from 'react-router-dom';
 import AiOutlineHome from '@meronex/icons/ai/AiOutlineHome';
+import { useAuth } from '../../contexts/auth/Auth.context';
+import { useNotification } from '../../contexts/notification/Notification.context';
 
 import './NavBar.styles.css';
-import { useAuth } from '../../contexts/auth/Auth.context';
 
 const NavBar = () => {
   const { currentUser, logout } = useAuth();
+  const { handleNotification } = useNotification();
 
   const history = useHistory();
 
   const handleLogOut = async () => {
     try {
       await logout();
+      handleNotification('Logout successful.', 'info');
       history.push('/');
     } catch (err) {
       console.log(err);

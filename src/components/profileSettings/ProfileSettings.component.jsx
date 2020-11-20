@@ -28,6 +28,8 @@ const ProfileSettings = () => {
       return false;
     }
 
+    setValidated(false);
+
     const inputName = name.trim();
 
     if (
@@ -52,7 +54,6 @@ const ProfileSettings = () => {
       setIsLoading(false);
       setName('');
       setAvatarImageUrl(null);
-      setValidated(false);
     }
 
     return true;

@@ -4,11 +4,21 @@ import { useNotification } from '../../contexts/notification/Notification.contex
 import './Notification.styles.css';
 
 const Notification = () => {
-  const { notification, notificationType } = useNotification();
+  const {
+    notification,
+    notificationType,
+    handleDismissNotification,
+    isNotificationShown,
+  } = useNotification();
 
   return (
     <div className="text-center fixed-top ml-auto mr-auto mt-5 notification-container">
-      <Alert show={notification !== ''} variant={notificationType}>
+      <Alert
+        show={isNotificationShown}
+        onClose={handleDismissNotification}
+        variant={notificationType}
+        dismissible
+      >
         {notification}
       </Alert>
     </div>

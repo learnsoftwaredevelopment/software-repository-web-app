@@ -26,6 +26,8 @@ const AccountSettings = () => {
       return false;
     }
 
+    setValidated(false);
+
     if (newPassword !== confirmNewPassword) {
       handleNotification(
         'Please ensure the new password and confirm new password matches.',
@@ -46,7 +48,6 @@ const AccountSettings = () => {
       setOldPassword('');
       setNewPassword('');
       setConfirmNewPassword('');
-      setValidated(false);
     }
 
     return true;

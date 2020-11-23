@@ -4,6 +4,7 @@ import { Form, Button, Card } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
 import { useAuth } from '../../contexts/auth/Auth.context';
 import { useNotification } from '../../contexts/notification/Notification.context';
+import { ALLOWED_USERNAME_REGEX } from '../../utils/config';
 
 const RegisterForm = () => {
   const [validated, setValidated] = useState(false);
@@ -15,7 +16,12 @@ const RegisterForm = () => {
   const [isTermsChecked, setTermsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { register, checkUsernameAvailability, setPreventRedirect } = useAuth();
+  const {
+    register,
+    checkUsernameAvailability,
+    setPreventRedirect,
+    setPreventUsernamePrompt,
+  } = useAuth();
   const { handleNotification } = useNotification();
 
   const handleSubmit = async (event) => {
@@ -32,7 +38,7 @@ const RegisterForm = () => {
     setValidated(false);
     const formattedUsername = username.toLowerCase().trim();
 
-    if (!RegExp('^[a-z0-9_]+$').test(formattedUsername)) {
+    if (!RegExp(ALLOWED_USERNAME_REGEX).test(formattedUsername)) {
       handleNotification(
         <>
           Please ensure the username only contains{' '}
@@ -51,6 +57,7 @@ const RegisterForm = () => {
     try {
       setIsLoading(true);
       setPreventRedirect(true);
+      setPreventUsernamePrompt(true);
       const isAvailable = await checkUsernameAvailability(formattedUsername);
       if (!isAvailable) {
         handleNotification(
@@ -75,6 +82,7 @@ const RegisterForm = () => {
       setPassword('');
       setConfirmPassword('');
       setTermsChecked(false);
+      setPreventUsernamePrompt(false);
       setPreventRedirect(false);
     }
 

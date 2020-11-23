@@ -1,0 +1,3 @@
+const ALLOWED_USERNAME_REGEX = '^[a-z0-9_]+$';
+
+export { ALLOWED_USERNAME_REGEX };

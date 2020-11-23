@@ -14,6 +14,7 @@ const AuthProvider = ({ children }) => {
   const [customClaims, setCustomClaims] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [preventRedirect, setPreventRedirect] = useState(false);
+  const [preventUsernamePrompt, setPreventUsernamePrompt] = useState(false);
 
   const setUsernameBackend = async (formattedUsername) => {
     const retrievedIdToken = await auth.currentUser.getIdToken();
@@ -107,6 +108,8 @@ const AuthProvider = ({ children }) => {
     setUsernameBackend,
     preventRedirect,
     setPreventRedirect,
+    preventUsernamePrompt,
+    setPreventUsernamePrompt,
   };
 
   useEffect(() => {

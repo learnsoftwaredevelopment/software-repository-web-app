@@ -10,17 +10,26 @@ import ProfilePage from './pages/profilePage/ProfilePage.component';
 import SettingsPage from './pages/settingsPage/SettingsPage.component';
 import Notification from './components/notification/Notification.component';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute.component';
+import UsernamePrompt from './components/usernamePrompt/UsernamePrompt.component';
 
 import './App.css';
 
 function App() {
-  const { currentUser, preventRedirect } = useAuth();
+  const {
+    currentUser,
+    preventRedirect,
+    customClaims,
+    preventUsernamePrompt,
+  } = useAuth();
 
   return (
     <div>
       <div className="content">
         <NavBar />
         <Notification />
+        {currentUser && !preventUsernamePrompt && customClaims && !customClaims.username ? (
+          <UsernamePrompt />
+        ) : null}
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route exact path="/login">

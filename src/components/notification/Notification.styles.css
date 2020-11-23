@@ -6,10 +6,12 @@
 
 .notification-container {
   width: 300px;
+  z-index: 1060;
 }
 
 @media (min-width: 768px) {
   .notification-container {
     width: 500px;
+    z-index: 1060;
   }
 }

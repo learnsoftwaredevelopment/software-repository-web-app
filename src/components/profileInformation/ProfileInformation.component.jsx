@@ -2,7 +2,7 @@ import { Card, Image } from 'react-bootstrap';
 import { useAuth } from '../../contexts/auth/Auth.context';
 
 const ProfileInformation = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, customClaims } = useAuth();
   return (
     <>
       <Card>
@@ -18,6 +18,12 @@ const ProfileInformation = () => {
         </div>
         <table className="table">
           <tbody>
+            <tr>
+              <th scope="row">Username</th>
+              <td>
+                {!customClaims ? '' : customClaims.username}
+              </td>
+            </tr>
             <tr>
               <th scope="row">Email</th>
               <td>{currentUser.email}</td>

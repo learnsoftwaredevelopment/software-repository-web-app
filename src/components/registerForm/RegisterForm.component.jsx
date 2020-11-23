@@ -15,7 +15,7 @@ const RegisterForm = () => {
   const [isTermsChecked, setTermsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { register } = useAuth();
+  const { register, checkUsernameAvailability, setPreventRedirect } = useAuth();
   const { handleNotification } = useNotification();
 
   const handleSubmit = async (event) => {
@@ -30,6 +30,18 @@ const RegisterForm = () => {
     }
 
     setValidated(false);
+    const formattedUsername = username.toLowerCase().trim();
+
+    if (!RegExp('^[a-z0-9_]+$').test(formattedUsername)) {
+      handleNotification(
+        <>
+          Please ensure the username only contains{' '}
+          <strong>alphanumeric characters and/or underscores</strong>.
+        </>,
+        'danger',
+      );
+      return false;
+    }
 
     if (password !== confirmPassword) {
       handleNotification('Please ensure the password matches.', 'danger');
@@ -38,7 +50,16 @@ const RegisterForm = () => {
 
     try {
       setIsLoading(true);
-      await register(email, password, name);
+      setPreventRedirect(true);
+      const isAvailable = await checkUsernameAvailability(formattedUsername);
+      if (!isAvailable) {
+        handleNotification(
+          'The username is already in use. Please input a different username.',
+          'danger',
+        );
+        return false;
+      }
+      await register(email, password, name, formattedUsername);
       handleNotification(
         'Registration successful. Please check your inbox to verify your email address.',
         'success',
@@ -54,6 +75,7 @@ const RegisterForm = () => {
       setPassword('');
       setConfirmPassword('');
       setTermsChecked(false);
+      setPreventRedirect(false);
     }
 
     return true;

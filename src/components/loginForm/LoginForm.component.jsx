@@ -37,7 +37,6 @@ const LoginForm = () => {
     } catch (err) {
       console.log(err);
       handleNotification('Login not successful.', 'danger');
-    } finally {
       setIsLoading(false);
       setEmail('');
       setPassword('');

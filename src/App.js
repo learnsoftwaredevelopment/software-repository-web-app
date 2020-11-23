@@ -14,7 +14,7 @@ import ProtectedRoute from './components/protectedRoute/ProtectedRoute.component
 import './App.css';
 
 function App() {
-  const { currentUser } = useAuth();
+  const { currentUser, preventRedirect } = useAuth();
 
   return (
     <div>
@@ -27,7 +27,11 @@ function App() {
             {currentUser ? <Redirect to="/" /> : <LoginPage />}
           </Route>
           <Route exact path="/register">
-            {currentUser ? <Redirect to="/" /> : <RegisterPage />}
+            {currentUser && !preventRedirect ? (
+              <Redirect to="/" />
+            ) : (
+              <RegisterPage />
+            )}
           </Route>
           <Route exact path="/reset-password">
             {currentUser ? <Redirect to="/" /> : <ResetPasswordPage />}

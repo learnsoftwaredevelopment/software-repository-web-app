@@ -6,7 +6,7 @@ import { useAuth } from '../../contexts/auth/Auth.context';
 import { useNotification } from '../../contexts/notification/Notification.context';
 
 const ProfileSettings = () => {
-  const { updateProfile, currentUser } = useAuth();
+  const { updateProfile, currentUser, customClaims } = useAuth();
   const { handleNotification } = useNotification();
 
   const [validated, setValidated] = useState(false);
@@ -67,7 +67,12 @@ const ProfileSettings = () => {
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Form.Group controlId="username">
               <Form.Label>Username</Form.Label>
-              <Form.Control type="text" readOnly required />
+              <Form.Control
+                type="text"
+                value={!customClaims ? '' : customClaims.username}
+                readOnly
+                required
+              />
               <Form.Control.Feedback type="invalid">
                 Please input a valid username.
               </Form.Control.Feedback>

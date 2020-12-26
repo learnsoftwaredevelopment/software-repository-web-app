@@ -11,6 +11,7 @@ import SettingsPage from './pages/settingsPage/SettingsPage.component';
 import Notification from './components/notification/Notification.component';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute.component';
 import UsernamePrompt from './components/usernamePrompt/UsernamePrompt.component';
+import AddSoftwarePage from './pages/addSoftwarePage/AddSoftwarePage.component';
 
 import './App.css';
 
@@ -47,6 +48,7 @@ function App() {
           </Route>
           <ProtectedRoute exact path="/profile" component={ProfilePage} />
           <ProtectedRoute exact path="/settings" component={SettingsPage} />
+          <ProtectedRoute exact path="/software/add" component={AddSoftwarePage} />
         </Switch>
       </div>
       <div className="d-flex align-items-center footer">

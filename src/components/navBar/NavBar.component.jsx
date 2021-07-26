@@ -33,12 +33,13 @@ const NavBar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link as={NavLink} to="/" className="custom-nav-link">
+            <Nav.Link as={NavLink} exact to="/" className="custom-nav-link">
               <AiOutlineHome />
               <span className="ml-1">Home</span>
             </Nav.Link>
             <Nav.Link
               as={NavLink}
+              exact
               to="/software/add"
               className="custom-nav-link"
             >
@@ -49,10 +50,10 @@ const NavBar = () => {
           <Nav>
             {!currentUser ? (
               <>
-                <Nav.Link as={NavLink} to="/login">
+                <Nav.Link as={NavLink} exact to="/login">
                   Login
                 </Nav.Link>
-                <Nav.Link as={NavLink} to="/register">
+                <Nav.Link as={NavLink} exact to="/register">
                   Register
                 </Nav.Link>
               </>

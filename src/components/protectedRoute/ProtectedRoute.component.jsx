@@ -10,13 +10,39 @@ const ProtectedRoute = ({ component: Component, ...otherProps }) => {
   return (
     <Route
       {...otherProps}
-      render={(props) => (currentUser ? <Component {...props} /> : <Redirect to="/login" />)}
+      render={
+        // eslint-disable-next-line no-confusing-arrow
+        (props) =>
+          // eslint-disable-next-line implicit-arrow-linebreak
+          currentUser ? (
+            <Component {...props} />
+          ) : (
+            <Redirect
+              to={{
+                pathname: '/login',
+                state: {
+                  from: props.location,
+                },
+              }}
+            />
+          )
+        // eslint-disable-next-line react/jsx-curly-newline
+      }
     />
   );
 };
 
 ProtectedRoute.propTypes = {
   component: PropTypes.func.isRequired,
+  location: PropTypes.oneOfType([PropTypes.object]),
+};
+
+ProtectedRoute.defaultProps = {
+  location: {
+    state: {
+      from: '/',
+    },
+  },
 };
 
 export default ProtectedRoute;

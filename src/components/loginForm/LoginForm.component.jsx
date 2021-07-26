@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Form, Button, Card } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
 import { useAuth } from '../../contexts/auth/Auth.context';
@@ -15,6 +15,8 @@ const LoginForm = () => {
   const { handleNotification } = useNotification();
 
   const history = useHistory();
+  const location = useLocation();
+  const { from } = location.state || { from: { pathname: '/' } };
 
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
@@ -33,7 +35,7 @@ const LoginForm = () => {
       setIsLoading(true);
       await login(email, password);
       handleNotification('Login successful.', 'success');
-      history.push('/');
+      history.push(from);
     } catch (err) {
       console.log(err);
       handleNotification('Login not successful.', 'danger');

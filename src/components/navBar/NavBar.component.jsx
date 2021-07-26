@@ -2,7 +2,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { NavLink, Link, useHistory } from 'react-router-dom';
-import AiOutlineHome from '@meronex/icons/ai/AiOutlineHome';
+import { AiOutlineHome, AiOutlinePlus } from 'react-icons/ai';
 import { useAuth } from '../../contexts/auth/Auth.context';
 import { useNotification } from '../../contexts/notification/Notification.context';
 
@@ -36,6 +36,14 @@ const NavBar = () => {
             <Nav.Link as={NavLink} to="/" className="custom-nav-link">
               <AiOutlineHome />
               <span className="ml-1">Home</span>
+            </Nav.Link>
+            <Nav.Link
+              as={NavLink}
+              to="/software/add"
+              className="custom-nav-link"
+            >
+              <AiOutlinePlus />
+              <span className="ml-1">Add Software</span>
             </Nav.Link>
           </Nav>
           <Nav>

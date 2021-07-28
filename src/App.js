@@ -14,6 +14,7 @@ import UsernamePrompt from './components/usernamePrompt/UsernamePrompt.component
 import AddSoftwarePage from './pages/addSoftwarePage/AddSoftwarePage.component';
 
 import './App.css';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 function App() {
   const {

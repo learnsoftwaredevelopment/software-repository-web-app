@@ -1,31 +1,76 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { InputGroup } from 'react-bootstrap';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 const MainSearchBar = () => {
+  const cacheRef = useRef({});
   const [isLoading, setIsLoading] = useState(false);
   const [options, setOptions] = useState([]);
+  const [query, setQuery] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
   console.log(selectedOption);
-  const handleSearch = (queryName) => {
-    setIsLoading(true);
 
-    axios
-      .get(
-        `${process.env.REACT_APP_BACKEND_API}search/software?name=${queryName}`,
-      )
-      .then((response) => {
-        console.log(response.data);
-        setOptions(response.data);
-        setIsLoading(false);
-      });
+  const PER_PAGE = 50;
+
+  const searchSoftware = (inputQuery, page = 0) => axios
+    .get(
+      `${process.env.REACT_APP_BACKEND_API}search/software?q=${inputQuery}&page=${page}&per_page=${PER_PAGE}`,
+    )
+    .then((response) => response.data)
+    .then(({ totalQueryResultCount, queryResponse }) => ({
+      options: queryResponse,
+      total_count: totalQueryResultCount,
+    }));
+
+  const handleInputChange = (inputQuery) => {
+    setQuery(inputQuery);
   };
 
-  // Bypass client-side filtering by returning `true`. Results are already
-  // filtered by the search endpoint, so no need to do it again.
-  const filterBy = () => true;
+  const handlePagination = (event, shownResults) => {
+    const cachedQuery = cacheRef.current[query];
+
+    if (
+      cachedQuery.options.length > shownResults
+      || cachedQuery.options.length === cachedQuery.total_count
+    ) {
+      return;
+    }
+
+    setIsLoading(true);
+
+    const page = cachedQuery.page + 1;
+
+    searchSoftware(query, page).then((response) => {
+      const newOptions = cachedQuery.options.concat(response.options);
+      cacheRef.current[query] = { ...cachedQuery, options: newOptions, page };
+      setIsLoading(false);
+      setOptions(newOptions);
+    });
+  };
+
+  /**
+   * As part of breaking changes in v5 onwards of react-bootstrap-typeahead,
+   * if using functional component instead of class component to use useCallBack
+   * Resource:
+   * https://github.com/ericgio/react-bootstrap-typeahead/blob/master/docs/Upgrading.md#v50-breaking-changes
+   * https://github.com/ericgio/react-bootstrap-typeahead/issues/561#issuecomment-650454677
+   */
+  const handleSearch = useCallback((inputQuery) => {
+    if (cacheRef.current[inputQuery]) {
+      setOptions(cacheRef.current[inputQuery].options);
+      return;
+    }
+
+    setIsLoading(true);
+    searchSoftware(inputQuery).then((response) => {
+      cacheRef.current[inputQuery] = { ...response, page: 0 };
+      setIsLoading(false);
+      setOptions(response.options);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -38,20 +83,28 @@ const MainSearchBar = () => {
           <AiOutlineSearch />
         </InputGroup.Text>
         <AsyncTypeahead
-          filterBy={filterBy}
           id="main-search-bar"
-          isLoading={isLoading}
           labelKey="name"
-          minLength={3}
-          onSearch={handleSearch}
+          maxResults={PER_PAGE - 1}
+          // eslint-disable-next-line react/destructuring-assignment
+          isLoading={isLoading}
+          // eslint-disable-next-line react/destructuring-assignment
           options={options}
+          minLength={2}
+          onInputChange={handleInputChange}
+          onPaginate={handlePagination}
+          onSearch={handleSearch}
+          onChange={(selected) => {
+            setSelectedOption(selected);
+          }}
+          paginate
           placeholder="Search for a software via name..."
-          onChange={(selected) => setSelectedOption(selected)}
           renderMenuItemChildren={(option) => (
-            <>
+            <div key={option.id}>
               <span>{option.name}</span>
-            </>
+            </div>
           )}
+          useCache={false}
         />
       </InputGroup>
     </>

@@ -2,7 +2,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { NavLink, Link, useHistory } from 'react-router-dom';
-import AiOutlineHome from '@meronex/icons/ai/AiOutlineHome';
+import { AiOutlineHome, AiOutlinePlus } from 'react-icons/ai';
 import { useAuth } from '../../contexts/auth/Auth.context';
 import { useNotification } from '../../contexts/notification/Notification.context';
 
@@ -33,18 +33,27 @@ const NavBar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link as={NavLink} to="/" className="custom-nav-link">
+            <Nav.Link as={NavLink} exact to="/" className="custom-nav-link">
               <AiOutlineHome />
               <span className="ml-1">Home</span>
+            </Nav.Link>
+            <Nav.Link
+              as={NavLink}
+              exact
+              to="/software/add"
+              className="custom-nav-link"
+            >
+              <AiOutlinePlus />
+              <span className="ml-1">Add Software</span>
             </Nav.Link>
           </Nav>
           <Nav>
             {!currentUser ? (
               <>
-                <Nav.Link as={NavLink} to="/login">
+                <Nav.Link as={NavLink} exact to="/login">
                   Login
                 </Nav.Link>
-                <Nav.Link as={NavLink} to="/register">
+                <Nav.Link as={NavLink} exact to="/register">
                   Register
                 </Nav.Link>
               </>

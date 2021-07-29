@@ -14,6 +14,8 @@ import UsernamePrompt from './components/usernamePrompt/UsernamePrompt.component
 import AddSoftwarePage from './pages/addSoftwarePage/AddSoftwarePage.component';
 
 import './App.css';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
+import SoftwareInformationPage from './softwareInformationPage/SoftwareInformation.component';
 
 function App() {
   const {
@@ -46,9 +48,12 @@ function App() {
           <Route exact path="/reset-password">
             {currentUser ? <Redirect to="/" /> : <ResetPasswordPage />}
           </Route>
+          <Route exact path="/software/:id">
+            <SoftwareInformationPage />
+          </Route>
           <ProtectedRoute exact path="/profile" component={ProfilePage} />
           <ProtectedRoute exact path="/settings" component={SettingsPage} />
-          <ProtectedRoute exact path="/software/add" component={AddSoftwarePage} />
+          <ProtectedRoute exact path="/edit/software/add" component={AddSoftwarePage} />
         </Switch>
       </div>
       <div className="d-flex align-items-center footer">

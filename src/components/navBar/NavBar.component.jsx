@@ -40,7 +40,7 @@ const NavBar = () => {
             <Nav.Link
               as={NavLink}
               exact
-              to="/software/add"
+              to="/edit/software/add"
               className="custom-nav-link"
             >
               <AiOutlinePlus />

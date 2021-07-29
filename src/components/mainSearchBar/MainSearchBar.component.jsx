@@ -3,14 +3,14 @@ import { useCallback, useRef, useState } from 'react';
 import { InputGroup } from 'react-bootstrap';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import { AiOutlineSearch } from 'react-icons/ai';
+import { useHistory } from 'react-router-dom';
 
 const MainSearchBar = () => {
   const cacheRef = useRef({});
+  const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const [options, setOptions] = useState([]);
   const [query, setQuery] = useState('');
-  const [selectedOption, setSelectedOption] = useState('');
-  console.log(selectedOption);
 
   const PER_PAGE = 50;
 
@@ -86,24 +86,28 @@ const MainSearchBar = () => {
           id="main-search-bar"
           labelKey="name"
           maxResults={PER_PAGE - 1}
-          // eslint-disable-next-line react/destructuring-assignment
           isLoading={isLoading}
-          // eslint-disable-next-line react/destructuring-assignment
           options={options}
           minLength={2}
           onInputChange={handleInputChange}
           onPaginate={handlePagination}
           onSearch={handleSearch}
           onChange={(selected) => {
-            setSelectedOption(selected);
+            if (selected.length === 1) {
+              history.push(`/software/${selected[0].id}`);
+            }
           }}
           paginate
           placeholder="Search for a software via name..."
           renderMenuItemChildren={(option) => (
             <div key={option.id}>
               <span>{option.name}</span>
+              <div>
+                <small>{`Version: ${option.version} Platform: ${option.platform}`}</small>
+              </div>
             </div>
           )}
+          clearButton
           useCache={false}
         />
       </InputGroup>

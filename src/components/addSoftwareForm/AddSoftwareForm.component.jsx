@@ -2,6 +2,10 @@ import { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import axios from 'axios';
+import isURL from 'validator/lib/isURL';
+import { useNotification } from '../../contexts/notification/Notification.context';
+import { useAuth } from '../../contexts/auth/Auth.context';
 
 const AddSoftwareForm = () => {
   const [validated, setValidated] = useState(false);
@@ -18,9 +22,13 @@ const AddSoftwareForm = () => {
   const [tags, setTags] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const { handleNotification } = useNotification();
+
+  const { currentUser } = useAuth();
+
   const splitByNewLineToArray = (stringObject) => stringObject.split('\n');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     const form = event.currentTarget;
 
     event.preventDefault();
@@ -34,11 +42,7 @@ const AddSoftwareForm = () => {
     setValidated(false);
 
     setIsLoading(true);
-    const compiledObject = {
-      name: softwareName,
-      version: softwareVersion,
-      description: softwareDescription,
-    };
+    let compiledObject = {};
 
     if (altSoftwareNames) {
       const altArray = splitByNewLineToArray(altSoftwareNames);
@@ -47,6 +51,13 @@ const AddSoftwareForm = () => {
     if (buildOn) {
       const buildOnArray = splitByNewLineToArray(buildOn);
       compiledObject.buildOn = buildOnArray;
+    }
+    if (softwareHomepage && !isURL(softwareHomepage)) {
+      handleNotification(
+        'The input Software Homepage is an invalid url. Please ensure the input Software Homepage url is valid.',
+        'danger',
+      );
+      return false;
     }
     if (developedBy) {
       const developedByArray = splitByNewLineToArray(developedBy);
@@ -64,9 +75,64 @@ const AddSoftwareForm = () => {
       };
     }
 
-    console.log(compiledObject);
+    try {
+      setIsLoading(true);
 
-    setIsLoading(false);
+      const softwareNameAvailability = await axios.get(
+        `${process.env.REACT_APP_BACKEND_API}search/software?q=${softwareName}`,
+      );
+      if (
+        softwareNameAvailability.data.queryResponse.filter(
+          (item) => item.name.toLowerCase() === softwareName.toLowerCase(),
+        ).length > 0
+      ) {
+        handleNotification(
+          'The software name is already in use. Please input a different software name.',
+          'danger',
+        );
+        return false;
+      }
+
+      compiledObject = {
+        ...compiledObject,
+        name: softwareName,
+        version: softwareVersion,
+        description: softwareDescription,
+        homePage: softwareHomepage,
+        platform: softwarePlatform,
+        isActiveDevelopment,
+      };
+
+      console.log(compiledObject);
+
+      const retrievedIdToken = await currentUser.getIdToken();
+      await axios.post(
+        `${process.env.REACT_APP_BACKEND_API}software`,
+        compiledObject,
+        {
+          headers: {
+            Authorization: `Bearer ${retrievedIdToken}`,
+          },
+        },
+      );
+      handleNotification('Software successfully added.', 'success');
+      setSoftwareName('');
+      setAltSoftwareNames('');
+      setSoftwareVersion('');
+      setSoftwareDescription('');
+      setSoftwareHomepage('');
+      setSoftwarePlatform('Windows');
+      setIsActiveDevelopment(true);
+      setBuildOn('');
+      setDevelopedBy('');
+      setMaintainedBy('');
+      setTags('');
+    } catch (err) {
+      console.log(err);
+      handleNotification('Addition of Software not successful.', 'danger');
+    } finally {
+      setIsLoading(false);
+    }
 
     return true;
   };
@@ -86,6 +152,9 @@ const AddSoftwareForm = () => {
               }}
               required
             />
+            <Form.Control.Feedback type="invalid">
+              Please input the software name.
+            </Form.Control.Feedback>
           </Form.Group>
         </Form.Row>
         <Form.Row>
@@ -133,10 +202,11 @@ const AddSoftwareForm = () => {
               onChange={(event) => {
                 setSoftwareDescription(event.target.value);
               }}
+              required
             />
-            <Form.Text className="text-muted">
+            <Form.Control.Feedback type="invalid">
               Please input the software description.
-            </Form.Text>
+            </Form.Control.Feedback>
           </Form.Group>
         </Form.Row>
         <Form.Row>
@@ -151,6 +221,9 @@ const AddSoftwareForm = () => {
               }}
               required
             />
+            <Form.Control.Feedback type="invalid">
+              Please input a valid url. An example: https://github.com/user/repo
+            </Form.Control.Feedback>
           </Form.Group>
         </Form.Row>
         <Form.Row>
@@ -168,6 +241,9 @@ const AddSoftwareForm = () => {
               <option>Linux</option>
               <option>MacOS</option>
             </Form.Control>
+            <Form.Control.Feedback type="invalid">
+              Please select the software platform.
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Col} controlId="isActiveDevelopment">
             <Form.Label>Active Development</Form.Label>
@@ -182,6 +258,9 @@ const AddSoftwareForm = () => {
               <option value="1">True</option>
               <option value="0">False</option>
             </Form.Control>
+            <Form.Control.Feedback type="invalid">
+              Please input the active development status.
+            </Form.Control.Feedback>
           </Form.Group>
         </Form.Row>
         <Form.Row>
@@ -202,6 +281,9 @@ const AddSoftwareForm = () => {
             <Form.Text className="text-muted">
               Each input must be on a new line.
             </Form.Text>
+            <Form.Control.Feedback type="invalid">
+              Please input the technologies which the software is build on.
+            </Form.Control.Feedback>
           </Form.Group>
         </Form.Row>
         <Form.Row>
@@ -222,6 +304,9 @@ const AddSoftwareForm = () => {
             <Form.Text className="text-muted">
               Each input must be on a new line.
             </Form.Text>
+            <Form.Control.Feedback type="invalid">
+              Please input the developer(s) of the software.
+            </Form.Control.Feedback>
           </Form.Group>
         </Form.Row>
         <Form.Row>
@@ -242,6 +327,10 @@ const AddSoftwareForm = () => {
             <Form.Text className="text-muted">
               Each input must be on a new line.
             </Form.Text>
+            <Form.Control.Feedback type="invalid">
+              Please input the maintainer(s) of the software. The maintainer(s)
+              can be same as the developer(s).
+            </Form.Control.Feedback>
           </Form.Group>
         </Form.Row>
         <Form.Row>
@@ -262,6 +351,9 @@ const AddSoftwareForm = () => {
             <Form.Text className="text-muted">
               Each tag must be on a new line.
             </Form.Text>
+            <Form.Control.Feedback type="invalid">
+              Please input the tags for the software to be added.
+            </Form.Control.Feedback>
           </Form.Group>
         </Form.Row>
         <Button disabled={isLoading} variant="primary" type="submit">

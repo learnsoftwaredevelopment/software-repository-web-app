@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
@@ -15,6 +16,9 @@ const SoftwareInformationPage = () => {
 
   return (
     <Container>
+      <Helmet>
+        <title>Software Repository | {softwareObject.name} </title>
+      </Helmet>
       <Row className="mt-5">
         <Col md={8} xl={6}>
           <h1>{softwareObject.name}</h1>

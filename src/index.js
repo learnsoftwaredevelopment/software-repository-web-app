@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './contexts/auth/Auth.context';
@@ -10,11 +11,13 @@ import { NotificationProvider } from './contexts/notification/Notification.conte
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <NotificationProvider>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
-      </NotificationProvider>
+      <HelmetProvider>
+        <NotificationProvider>
+          <AuthProvider>
+            <App />
+          </AuthProvider>
+        </NotificationProvider>
+      </HelmetProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root'),

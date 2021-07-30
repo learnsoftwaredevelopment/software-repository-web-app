@@ -17,7 +17,7 @@ const SoftwareInformationPage = () => {
   return (
     <Container>
       <Helmet>
-        <title>Software Repository | {softwareObject.name} </title>
+        <title>{`Software Repository | ${softwareObject.name}`}</title>
       </Helmet>
       <Row className="mt-5">
         <Col md={8} xl={6}>

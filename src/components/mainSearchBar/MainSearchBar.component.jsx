@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import axios from 'axios';
 import { useCallback, useRef, useState } from 'react';
 import { InputGroup } from 'react-bootstrap';
@@ -101,7 +102,7 @@ const MainSearchBar = () => {
           placeholder="Search for a software via name..."
           renderMenuItemChildren={(option) => (
             <div key={option.id}>
-              <span>{option.name}</span>
+              <span>{_.startCase(option.name)}</span>
               <div>
                 <small>{`Version: ${option.version} Platform: ${option.platform}`}</small>
               </div>

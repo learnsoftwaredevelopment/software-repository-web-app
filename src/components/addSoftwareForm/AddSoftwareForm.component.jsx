@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { InputGroup } from 'react-bootstrap';
+import { AiOutlineTwitter } from 'react-icons/ai';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -12,13 +14,17 @@ const AddSoftwareForm = () => {
   const [softwareName, setSoftwareName] = useState('');
   const [altSoftwareNames, setAltSoftwareNames] = useState('');
   const [softwareVersion, setSoftwareVersion] = useState('');
+  const [shortDescription, setShortDescription] = useState('');
+  const [softwareVideoUrl, setSoftwareVideoUrl] = useState('');
   const [softwareDescription, setSoftwareDescription] = useState('');
   const [softwareHomepage, setSoftwareHomepage] = useState('');
   const [softwarePlatform, setSoftwarePlatform] = useState('Windows');
   const [isActiveDevelopment, setIsActiveDevelopment] = useState(true);
+  const [pricing, setPricing] = useState('Free');
   const [buildOn, setBuildOn] = useState('');
   const [developedBy, setDevelopedBy] = useState('');
   const [maintainedBy, setMaintainedBy] = useState('');
+  const [twitterUsername, setTwitterUsername] = useState('');
   const [tags, setTags] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,20 +47,44 @@ const AddSoftwareForm = () => {
 
     setValidated(false);
 
-    setIsLoading(true);
     let compiledObject = {};
 
     if (altSoftwareNames) {
       const altArray = splitByNewLineToArray(altSoftwareNames);
       compiledObject.alternativeNames = altArray;
     }
+    if (
+      softwareVideoUrl
+      && !isURL(softwareVideoUrl, {
+        protocols: ['http', 'https'],
+        host_whitelist: ['youtube.com', 'vimeo.com'],
+      })
+    ) {
+      handleNotification(
+        'The input Software Video URL is an invalid url. Please ensure the input Software Video URL is valid. Note: Only youtube.com or vimeo.com video providers are supported. An example: https://vimeo.com/573268564',
+        'danger',
+      );
+      return false;
+    }
     if (buildOn) {
       const buildOnArray = splitByNewLineToArray(buildOn);
       compiledObject.buildOn = buildOnArray;
     }
-    if (softwareHomepage && !isURL(softwareHomepage)) {
+    if (
+      softwareHomepage
+      && !isURL(softwareHomepage, {
+        protocols: ['http', 'https'],
+      })
+    ) {
       handleNotification(
         'The input Software Homepage is an invalid url. Please ensure the input Software Homepage url is valid.',
+        'danger',
+      );
+      return false;
+    }
+    if (shortDescription.length === 0 || shortDescription.length > 100) {
+      handleNotification(
+        'Please input the software short description and ensure that it only contains between 1 to 100 (inclusive) characters.',
         'danger',
       );
       return false;
@@ -97,10 +127,14 @@ const AddSoftwareForm = () => {
         ...compiledObject,
         name: softwareName,
         version: softwareVersion,
+        shortDescription,
+        softwareVideoUrl,
         description: softwareDescription,
         homePage: softwareHomepage,
         platform: softwarePlatform,
         isActiveDevelopment,
+        pricing,
+        twitterUsername,
       };
 
       console.log(compiledObject);
@@ -119,13 +153,17 @@ const AddSoftwareForm = () => {
       setSoftwareName('');
       setAltSoftwareNames('');
       setSoftwareVersion('');
+      setShortDescription('');
+      setSoftwareVideoUrl('');
       setSoftwareDescription('');
       setSoftwareHomepage('');
       setSoftwarePlatform('Windows');
       setIsActiveDevelopment(true);
+      setPricing('Free');
       setBuildOn('');
       setDevelopedBy('');
       setMaintainedBy('');
+      setTwitterUsername('');
       setTags('');
     } catch (err) {
       console.log(err);
@@ -189,6 +227,50 @@ const AddSoftwareForm = () => {
             <Form.Text className="text-muted">
               Please input the latest version of the software.
             </Form.Text>
+          </Form.Group>
+        </Form.Row>
+        <Form.Row>
+          <Form.Group as={Col} controlId="shortDescription">
+            <Form.Label>Software Short Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              placeholder="Enter Software Short Description"
+              maxlength={100}
+              rows={5}
+              value={shortDescription}
+              onChange={(event) => {
+                setShortDescription(event.target.value);
+              }}
+              required
+            />
+            <Form.Text className="text-muted">
+              The input software short description allowed maximum length is 100
+              characters.
+            </Form.Text>
+            <Form.Control.Feedback type="invalid">
+              Please input the software short description and ensure that it
+              only contains between 1 to 100 (inclusive) characters.
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Form.Row>
+        <Form.Row>
+          <Form.Group as={Col} controlId="videoLink">
+            <Form.Label>Software Video URL</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter Software Video URL"
+              value={softwareVideoUrl}
+              onChange={(event) => {
+                setSoftwareVideoUrl(event.target.value);
+              }}
+            />
+            <Form.Text className="text-muted">
+              Note: Only youtube.com or vimeo.com video providers are supported.
+              An example: https://vimeo.com/573268564
+            </Form.Text>
+            <Form.Control.Feedback type="invalid">
+              Please input a valid url. An example: https://github.com/user/repo
+            </Form.Control.Feedback>
           </Form.Group>
         </Form.Row>
         <Form.Row>
@@ -264,12 +346,43 @@ const AddSoftwareForm = () => {
           </Form.Group>
         </Form.Row>
         <Form.Row>
+          <Form.Group as={Col} controlId="pricing">
+            <Form.Label>Pricing</Form.Label>
+            <Form.Control
+              as="select"
+              value={pricing}
+              onChange={(event) => {
+                setPricing(event.target.value);
+              }}
+              required
+            >
+              <option>Free</option>
+              <option>Paid Subscription Based</option>
+              <option>Paid Subscription Based With Free Option</option>
+              <option>Paid Subscription Based With Free Trial</option>
+              <option>Paid One Time</option>
+              <option>Paid One Time With Free Option</option>
+              <option>Paid One Time With Free Trial</option>
+              <option>Paid Tiered Pricing</option>
+              <option>Paid Tiered Pricing with Free Option</option>
+              <option>Paid Tiered Pricing With Free Trial</option>
+            </Form.Control>
+            <Form.Text className="text-muted">
+              Please select the appropriate software pricing model that best
+              matches the software.
+            </Form.Text>
+            <Form.Control.Feedback type="invalid">
+              Please input the software pricing model.
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Form.Row>
+        <Form.Row>
           <Form.Group as={Col} controlId="buildOn">
             <Form.Label>Build On</Form.Label>
             <Form.Control
               as="textarea"
               placeholder={
-                'Enter each input must be on a new line.\nAn example: \nPython\nNode.js\n'
+                'Enter each input must be on a new line.\nAn example:\nPython\nNode.js\n'
               }
               rows={5}
               value={buildOn}
@@ -331,6 +444,20 @@ const AddSoftwareForm = () => {
               Please input the maintainer(s) of the software. The maintainer(s)
               can be same as the developer(s).
             </Form.Control.Feedback>
+          </Form.Group>
+        </Form.Row>
+        <Form.Row>
+          <Form.Group as={Col} controlId="twitterUsername">
+            <Form.Label visuallyHidden>Software Twitter Username</Form.Label>
+            <InputGroup>
+              <InputGroup.Text>
+                <AiOutlineTwitter />
+              </InputGroup.Text>
+              <Form.Control placeholder="Enter Software Twitter Username" />
+            </InputGroup>
+            <Form.Text className="text-muted">
+              Please input the software Twitter username if any.
+            </Form.Text>
           </Form.Group>
         </Form.Row>
         <Form.Row>

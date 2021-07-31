@@ -1,0 +1,21 @@
+#app-description-header-col {
+    text-align: center
+}
+
+#app-description-header-info {
+    margin-top: 5%;
+}
+
+@media (min-width: 768px) {
+  #app-description-header-col {
+    display: flex;
+    align-items: center;
+    text-align :left;
+  }
+
+  #app-description-header-info {
+    display: inline-block;
+    margin-top: 0%;
+    margin-left: 5%;
+  }
+}

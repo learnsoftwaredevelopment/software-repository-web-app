@@ -25,7 +25,7 @@ function App() {
   } = useAuth();
 
   return (
-    <div>
+    <div className="app">
       <Helmet>
         <title>Software Repository</title>
       </Helmet>

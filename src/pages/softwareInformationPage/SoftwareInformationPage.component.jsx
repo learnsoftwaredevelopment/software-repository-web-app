@@ -27,7 +27,7 @@ const SoftwareInformationPage = () => {
         </title>
       </Helmet>
       <Row className="mt-5">
-        <Col md={8} xl={6} id="app-description-header-col">
+        <Col md={10} id="app-description-header-col">
           <Image
             src="https://plchldr.co/i/128x128?&bg=000000&fc=808080"
             width="128px"

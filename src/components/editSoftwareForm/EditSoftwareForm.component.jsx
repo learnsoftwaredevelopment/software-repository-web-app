@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { InputGroup } from 'react-bootstrap';
 import { AiOutlineTwitter } from 'react-icons/ai';
 import Form from 'react-bootstrap/Form';
@@ -7,12 +7,20 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import isURL from 'validator/lib/isURL';
+import { useParams } from 'react-router-dom';
 import { useNotification } from '../../contexts/notification/Notification.context';
 import { useAuth } from '../../contexts/auth/Auth.context';
-import { availablePricing } from '../../utils/utils';
+import {
+  availablePricing,
+  parseSoftwarePlatform,
+  parseSoftwarePricing,
+} from '../../utils/utils';
 
-const AddSoftwareForm = () => {
+const EditSoftwareForm = () => {
+  const { id } = useParams();
+
   const [validated, setValidated] = useState(false);
+  const [initialSoftwareName, setInitialSoftwareName] = useState('');
   const [softwareName, setSoftwareName] = useState('');
   const [altSoftwareNames, setAltSoftwareNames] = useState('');
   const [softwareVersion, setSoftwareVersion] = useState('');
@@ -114,7 +122,8 @@ const AddSoftwareForm = () => {
         `${process.env.REACT_APP_BACKEND_API}search/software?q=${softwareName}`,
       );
       if (
-        softwareNameAvailability.data.queryResponse.filter(
+        softwareName.toLowerCase() !== initialSoftwareName
+        && softwareNameAvailability.data.queryResponse.filter(
           (item) => item.name.toLowerCase() === softwareName.toLowerCase(),
         ).length > 0
       ) {
@@ -142,8 +151,8 @@ const AddSoftwareForm = () => {
       console.log(compiledObject);
 
       const retrievedIdToken = await currentUser.getIdToken();
-      await axios.post(
-        `${process.env.REACT_APP_BACKEND_API}software`,
+      await axios.patch(
+        `${process.env.REACT_APP_BACKEND_API}software/${id}`,
         compiledObject,
         {
           headers: {
@@ -151,31 +160,40 @@ const AddSoftwareForm = () => {
           },
         },
       );
-      handleNotification('Software successfully added.', 'success');
-      setSoftwareName('');
-      setAltSoftwareNames('');
-      setSoftwareVersion('');
-      setShortDescription('');
-      setSoftwareVideoUrl('');
-      setSoftwareDescription('');
-      setSoftwareHomepage('');
-      setSoftwarePlatform('Windows');
-      setIsActiveDevelopment(true);
-      setPricing('Free');
-      setBuildOn('');
-      setDevelopedBy('');
-      setMaintainedBy('');
-      setTwitterUsername('');
-      setTags('');
+      handleNotification('Software successfully edited.', 'success');
     } catch (err) {
       console.log(err);
-      handleNotification('Addition of Software not successful.', 'danger');
+      handleNotification('Edit Software not successful.', 'danger');
     } finally {
       setIsLoading(false);
     }
 
     return true;
   };
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_BACKEND_API}software/${id}`)
+      .then((response) => response.data)
+      .then((data) => {
+        setInitialSoftwareName(data.name);
+        setSoftwareName(data.name);
+        setAltSoftwareNames(data.alternativeNames.join('\n'));
+        setSoftwareVersion(data.version);
+        setShortDescription(data.shortDescription);
+        setSoftwareVideoUrl(data.videoLink);
+        setSoftwareDescription(data.description);
+        setSoftwareHomepage(data.homePage);
+        setSoftwarePlatform(parseSoftwarePlatform(data.platform));
+        setIsActiveDevelopment(data.isActiveDevelopment);
+        setPricing(parseSoftwarePricing(data.pricing));
+        setBuildOn(data.buildOn.join('\n'));
+        setDevelopedBy(data.developedBy.join('\n'));
+        setMaintainedBy(data.maintainedBy.join('\n'));
+        setTwitterUsername(data.twitterUsername);
+        setTags(data.meta.tags.join('\n'));
+      });
+  }, [id]);
 
   return (
     <>
@@ -480,11 +498,11 @@ const AddSoftwareForm = () => {
           </Form.Group>
         </Form.Row>
         <Button disabled={isLoading} variant="primary" type="submit">
-          {isLoading ? 'Adding Software' : 'Add Software'}
+          {isLoading ? 'Editing Software' : 'Edit Software'}
         </Button>
       </Form>
     </>
   );
 };
 
-export default AddSoftwareForm;
+export default EditSoftwareForm;

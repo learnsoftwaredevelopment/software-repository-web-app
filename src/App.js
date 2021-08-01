@@ -13,11 +13,12 @@ import Notification from './components/notification/Notification.component';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute.component';
 import UsernamePrompt from './components/usernamePrompt/UsernamePrompt.component';
 import AddSoftwarePage from './pages/addSoftwarePage/AddSoftwarePage.component';
-import SoftwareInformationPage from './softwareInformationPage/SoftwareInformation.component';
+import SoftwareInformationPage from './pages/softwareInformationPage/SoftwareInformationPage.component';
 import NotFoundPage from './pages/notFoundPage/NotFoundPage.component';
 
 import './App.css';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+import EditSoftwarePage from './pages/EditSoftwarePage/EditSoftwarePage.component';
 
 function App() {
   const {
@@ -62,6 +63,11 @@ function App() {
             exact
             path="/edit/software/add"
             component={AddSoftwarePage}
+          />
+          <ProtectedRoute
+            exact
+            path="/edit/software/:id"
+            component={EditSoftwarePage}
           />
           <Route path="*">
             <NotFoundPage />

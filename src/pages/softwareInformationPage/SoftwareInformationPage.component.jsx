@@ -7,7 +7,7 @@ import {
 } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
-import './SoftwareInformation.styles.css';
+import './SoftwareInformationPage.styles.css';
 
 const SoftwareInformationPage = () => {
   const { id } = useParams();

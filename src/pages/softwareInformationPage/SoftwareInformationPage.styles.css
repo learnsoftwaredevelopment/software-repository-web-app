@@ -1,16 +1,16 @@
 #app-description-header-col {
-    text-align: center
+  text-align: center;
 }
 
 #app-description-header-info {
-    margin-top: 5%;
+  margin-top: 5%;
 }
 
 @media (min-width: 768px) {
   #app-description-header-col {
     display: flex;
     align-items: center;
-    text-align :left;
+    text-align: left;
   }
 
   #app-description-header-info {

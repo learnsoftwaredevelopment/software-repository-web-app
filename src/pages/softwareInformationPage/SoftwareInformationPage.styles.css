@@ -10,7 +10,7 @@
   #app-description-header-col {
     display: flex;
     align-items: center;
-    text-align: left;
+    text-align: justify;
   }
 
   #app-description-header-info {

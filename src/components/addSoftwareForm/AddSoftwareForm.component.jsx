@@ -449,7 +449,11 @@ const AddSoftwareForm = () => {
               <InputGroup.Text>
                 <AiOutlineTwitter />
               </InputGroup.Text>
-              <Form.Control placeholder="Enter Software Twitter Username" />
+              <Form.Control
+                placeholder="Enter Software Twitter Username"
+                value={twitterUsername}
+                onChange={(event) => setTwitterUsername(event.target.value)}
+              />
             </InputGroup>
             <Form.Text className="text-muted">
               Please input the software Twitter username if any.

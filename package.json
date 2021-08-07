@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^12.2.2",
     "axios": "^0.21.0",
     "bootstrap": "^4.6.0",
+    "dayjs": "^1.10.6",
     "firebase": "^8.8.1",
     "lodash": "^4.17.21",
     "prop-types": "^15.7.2",

@@ -27,5 +27,9 @@ module.exports = {
     'react/jsx-one-expression-per-line': 'off',
     'import/no-extraneous-dependencies': 'off',
     'import/prefer-default-export': 'off',
+    'linebreak-style': [
+      'error',
+      process.platform === 'win32' ? 'windows' : 'unix',
+    ],
   },
 };

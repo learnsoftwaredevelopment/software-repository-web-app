@@ -42,7 +42,7 @@ const EditSoftwareForm = () => {
 
   const { currentUser } = useAuth();
 
-  const splitByNewLineToArray = (stringObject) => stringObject.split('\n');
+  const splitByNewLineToArrayAndRemoveEmptyElement = (stringObject) => stringObject.split('\n').filter((item) => item);
 
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
@@ -60,7 +60,7 @@ const EditSoftwareForm = () => {
     let compiledObject = {};
 
     if (altSoftwareNames) {
-      const altArray = splitByNewLineToArray(altSoftwareNames);
+      const altArray = splitByNewLineToArrayAndRemoveEmptyElement(altSoftwareNames);
       compiledObject.alternativeNames = altArray;
     }
     if (
@@ -77,7 +77,7 @@ const EditSoftwareForm = () => {
       return false;
     }
     if (buildOn) {
-      const buildOnArray = splitByNewLineToArray(buildOn);
+      const buildOnArray = splitByNewLineToArrayAndRemoveEmptyElement(buildOn);
       compiledObject.buildOn = buildOnArray;
     }
     if (
@@ -100,15 +100,15 @@ const EditSoftwareForm = () => {
       return false;
     }
     if (developedBy) {
-      const developedByArray = splitByNewLineToArray(developedBy);
+      const developedByArray = splitByNewLineToArrayAndRemoveEmptyElement(developedBy);
       compiledObject.developedBy = developedByArray;
     }
     if (maintainedBy) {
-      const maintainedByArray = splitByNewLineToArray(maintainedBy);
+      const maintainedByArray = splitByNewLineToArrayAndRemoveEmptyElement(maintainedBy);
       compiledObject.maintainedBy = maintainedByArray;
     }
     if (tags) {
-      const tagsArray = splitByNewLineToArray(tags);
+      const tagsArray = splitByNewLineToArrayAndRemoveEmptyElement(tags);
       compiledObject.meta = {
         ...compiledObject.meta,
         tags: tagsArray,

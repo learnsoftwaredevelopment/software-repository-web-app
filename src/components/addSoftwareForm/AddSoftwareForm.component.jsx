@@ -130,7 +130,7 @@ const AddSoftwareForm = () => {
         name: softwareName,
         version: softwareVersion,
         shortDescription,
-        softwareVideoUrl,
+        videoLink: softwareVideoUrl,
         description: softwareDescription,
         homePage: softwareHomepage,
         platform: softwarePlatform,

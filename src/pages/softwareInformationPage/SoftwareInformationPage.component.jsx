@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import { useEffect, useState } from 'react';
 import {
   Col, Container, Row, Image, Badge, Button, Card, Form,
@@ -8,7 +10,9 @@ import {
 import { useHistory, useParams } from 'react-router-dom';
 
 import './SoftwareInformationPage.styles.css';
-import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+import {
+  AiOutlineDelete, AiOutlineEdit, AiOutlineHome, AiOutlineTwitter,
+} from 'react-icons/ai';
 import { useAuth } from '../../contexts/auth/Auth.context';
 import { useNotification } from '../../contexts/notification/Notification.context';
 import { parseSoftwarePlatform } from '../../utils/utils';
@@ -18,6 +22,8 @@ const SoftwareInformationPage = () => {
   const { currentUser } = useAuth();
   const { handleNotification } = useNotification();
   const history = useHistory();
+
+  dayjs.extend(relativeTime);
 
   const [softwareObject, setSoftwareObject] = useState(null);
 
@@ -220,6 +226,23 @@ const SoftwareInformationPage = () => {
                         </Form.Group>
                       </Form.Row>
                     </Form>
+                    <Button
+                      className="mr-2"
+                      variant="outline-primary"
+                      href={`https://twitter.com/${softwareObject.twitterUsername}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <AiOutlineTwitter /> Software Twitter
+                    </Button>
+                    <Button
+                      variant="outline-primary"
+                      href={softwareObject.homePage}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <AiOutlineHome /> Software Homepage
+                    </Button>
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -263,6 +286,34 @@ const SoftwareInformationPage = () => {
                               )}
                             />
                             ) : null}
+                        </Form.Group>
+                      </Form.Row>
+
+                      <Form.Row>
+                        <Form.Group as={Col} controlId="added-on">
+                          <Form.Label className="font-weight-bold">
+                            Added
+                          </Form.Label>
+                          <Form.Control
+                            plaintext
+                            readOnly
+                            defaultValue={dayjs(
+                              softwareObject.createdAt,
+                            ).fromNow()}
+                          />
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="last-updated">
+                          <Form.Label className="font-weight-bold">
+                            Last Updated
+                          </Form.Label>
+                          <Form.Control
+                            plaintext
+                            readOnly
+                            defaultValue={dayjs(
+                              softwareObject.updatedAt,
+                            ).fromNow()}
+                          />
                         </Form.Group>
                       </Form.Row>
 

@@ -15,6 +15,7 @@ import {
   parseSoftwarePlatform,
   parseSoftwarePricing,
 } from '../../utils/utils';
+import { ALLOWED_VIDEO_HOST_WHITELIST } from '../../utils/config';
 
 const EditSoftwareForm = () => {
   const { id } = useParams();
@@ -67,7 +68,7 @@ const EditSoftwareForm = () => {
       softwareVideoUrl
       && !isURL(softwareVideoUrl, {
         protocols: ['http', 'https'],
-        host_whitelist: ['youtube.com', 'vimeo.com'],
+        host_whitelist: ALLOWED_VIDEO_HOST_WHITELIST,
       })
     ) {
       handleNotification(

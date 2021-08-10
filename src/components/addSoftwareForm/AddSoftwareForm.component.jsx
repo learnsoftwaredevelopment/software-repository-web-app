@@ -34,7 +34,7 @@ const AddSoftwareForm = () => {
 
   const { currentUser } = useAuth();
 
-  const splitByNewLineToArray = (stringObject) => stringObject.split('\n');
+  const splitByNewLineToArrayAndRemoveEmptyElement = (stringObject) => stringObject.split('\n').filter((item) => item);
 
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
@@ -52,7 +52,7 @@ const AddSoftwareForm = () => {
     let compiledObject = {};
 
     if (altSoftwareNames) {
-      const altArray = splitByNewLineToArray(altSoftwareNames);
+      const altArray = splitByNewLineToArrayAndRemoveEmptyElement(altSoftwareNames);
       compiledObject.alternativeNames = altArray;
     }
     if (
@@ -69,7 +69,7 @@ const AddSoftwareForm = () => {
       return false;
     }
     if (buildOn) {
-      const buildOnArray = splitByNewLineToArray(buildOn);
+      const buildOnArray = splitByNewLineToArrayAndRemoveEmptyElement(buildOn);
       compiledObject.buildOn = buildOnArray;
     }
     if (
@@ -92,15 +92,15 @@ const AddSoftwareForm = () => {
       return false;
     }
     if (developedBy) {
-      const developedByArray = splitByNewLineToArray(developedBy);
+      const developedByArray = splitByNewLineToArrayAndRemoveEmptyElement(developedBy);
       compiledObject.developedBy = developedByArray;
     }
     if (maintainedBy) {
-      const maintainedByArray = splitByNewLineToArray(maintainedBy);
+      const maintainedByArray = splitByNewLineToArrayAndRemoveEmptyElement(maintainedBy);
       compiledObject.maintainedBy = maintainedByArray;
     }
     if (tags) {
-      const tagsArray = splitByNewLineToArray(tags);
+      const tagsArray = splitByNewLineToArrayAndRemoveEmptyElement(tags);
       compiledObject.meta = {
         ...compiledObject.meta,
         tags: tagsArray,
@@ -130,7 +130,7 @@ const AddSoftwareForm = () => {
         name: softwareName,
         version: softwareVersion,
         shortDescription,
-        softwareVideoUrl,
+        videoLink: softwareVideoUrl,
         description: softwareDescription,
         homePage: softwareHomepage,
         platform: softwarePlatform,

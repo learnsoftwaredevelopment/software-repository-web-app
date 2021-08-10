@@ -6,6 +6,24 @@
   margin-top: 5%;
 }
 
+.borderless-text-area {
+  border: none;
+  background-color: transparent;
+  resize: none;
+  outline: none;
+}
+
+.player-wrapper {
+  position: relative;
+  padding-top: 56.25% /* Player ratio: 100 / (1280 / 720) */
+}
+
+.react-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 @media (min-width: 768px) {
   #app-description-header-col {
     display: flex;

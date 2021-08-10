@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
+import ReactPlayer from 'react-player';
+import isURL from 'validator/lib/isURL';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useEffect, useState } from 'react';
@@ -106,8 +108,34 @@ const SoftwareInformationPage = () => {
               </div>
             </Col>
           </Row>
+          {softwareObject.videoLink
+          && isURL(softwareObject.videoLink, {
+            protocols: ['http', 'https'],
+            host_whitelist: ['youtube.com', 'vimeo.com'],
+          }) ? (
+            <Row className="justify-content-center mt-5">
+              <Col md={10}>
+                <Card>
+                  <Card.Header as="h4">Video Preview</Card.Header>
+                  <Card.Body>
+                    <Card.Text>
+                      <div className="player-wrapper">
+                        <ReactPlayer
+                          className="react-player"
+                          url={softwareObject.videoLink}
+                          height="100%"
+                          width="100%"
+                          pip
+                        />
+                      </div>
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+            ) : null}
           <Row className="justify-content-center mt-5">
-            <Col md={10} id="app-description-content-col">
+            <Col md={10}>
               <Card>
                 <Card.Header as="h4">Description</Card.Header>
                 <Card.Body>
@@ -117,7 +145,7 @@ const SoftwareInformationPage = () => {
             </Col>
           </Row>
           <Row className="justify-content-center mt-5">
-            <Col md={10} id="app-description-content-col">
+            <Col md={10}>
               <Card>
                 <Card.Header as="h4">Information</Card.Header>
                 <Card.Body>
@@ -249,7 +277,7 @@ const SoftwareInformationPage = () => {
             </Col>
           </Row>
           <Row className="justify-content-center mt-5">
-            <Col md={10} id="app-description-content-col">
+            <Col md={10}>
               <Card>
                 <Card.Header as="h4">Meta</Card.Header>
                 <Card.Body>

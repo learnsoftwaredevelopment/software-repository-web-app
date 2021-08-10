@@ -7,17 +7,28 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useEffect, useState } from 'react';
 import {
-  Col, Container, Row, Image, Badge, Button, Card, Form,
+  Col,
+  Container,
+  Row,
+  Image,
+  Badge,
+  Button,
+  Card,
+  Form,
 } from 'react-bootstrap';
 import { useHistory, useParams } from 'react-router-dom';
-
-import './SoftwareInformationPage.styles.css';
 import {
-  AiOutlineDelete, AiOutlineEdit, AiOutlineHome, AiOutlineTwitter,
+  AiOutlineDelete,
+  AiOutlineEdit,
+  AiOutlineHome,
+  AiOutlineTwitter,
 } from 'react-icons/ai';
 import { useAuth } from '../../contexts/auth/Auth.context';
 import { useNotification } from '../../contexts/notification/Notification.context';
 import { parseSoftwarePlatform } from '../../utils/utils';
+import { ALLOWED_VIDEO_HOST_WHITELIST } from '../../utils/config';
+
+import './SoftwareInformationPage.styles.css';
 
 const SoftwareInformationPage = () => {
   const { id } = useParams();
@@ -111,7 +122,7 @@ const SoftwareInformationPage = () => {
           {softwareObject.videoLink
           && isURL(softwareObject.videoLink, {
             protocols: ['http', 'https'],
-            host_whitelist: ['youtube.com', 'vimeo.com'],
+            host_whitelist: ALLOWED_VIDEO_HOST_WHITELIST,
           }) ? (
             <Row className="justify-content-center mt-5">
               <Col md={10}>
@@ -125,6 +136,7 @@ const SoftwareInformationPage = () => {
                           url={softwareObject.videoLink}
                           height="100%"
                           width="100%"
+                          controls
                           pip
                         />
                       </div>
@@ -203,6 +215,7 @@ const SoftwareInformationPage = () => {
                           </Form.Label>
 
                           <Form.Control
+                            className="borderless-input"
                             plaintext
                             readOnly
                             defaultValue={
@@ -292,6 +305,7 @@ const SoftwareInformationPage = () => {
                           && softwareObject.meta.addedByUser ? (
                             <Form.Control
                               plaintext
+                              className="borderless-input"
                               readOnly
                               defaultValue={_.startCase(
                                 softwareObject.meta.addedByUser.username,
@@ -307,6 +321,7 @@ const SoftwareInformationPage = () => {
                           {softwareObject.meta
                           && softwareObject.meta.updatedByUser ? (
                             <Form.Control
+                              className="borderless-input"
                               plaintext
                               readOnly
                               defaultValue={_.startCase(
@@ -323,6 +338,7 @@ const SoftwareInformationPage = () => {
                             Added
                           </Form.Label>
                           <Form.Control
+                            className="borderless-input"
                             plaintext
                             readOnly
                             defaultValue={dayjs(
@@ -336,6 +352,7 @@ const SoftwareInformationPage = () => {
                             Last Updated
                           </Form.Label>
                           <Form.Control
+                            className="borderless-input"
                             plaintext
                             readOnly
                             defaultValue={dayjs(

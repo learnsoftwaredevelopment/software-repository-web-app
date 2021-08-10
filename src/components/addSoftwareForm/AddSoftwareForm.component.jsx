@@ -10,6 +10,7 @@ import isURL from 'validator/lib/isURL';
 import { useNotification } from '../../contexts/notification/Notification.context';
 import { useAuth } from '../../contexts/auth/Auth.context';
 import { availablePricing } from '../../utils/utils';
+import { ALLOWED_VIDEO_HOST_WHITELIST } from '../../utils/config';
 
 const AddSoftwareForm = () => {
   const [validated, setValidated] = useState(false);
@@ -59,7 +60,7 @@ const AddSoftwareForm = () => {
       softwareVideoUrl
       && !isURL(softwareVideoUrl, {
         protocols: ['http', 'https'],
-        host_whitelist: ['youtube.com', 'vimeo.com'],
+        host_whitelist: ALLOWED_VIDEO_HOST_WHITELIST,
       })
     ) {
       handleNotification(

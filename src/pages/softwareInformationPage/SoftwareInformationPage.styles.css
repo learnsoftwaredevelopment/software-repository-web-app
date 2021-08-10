@@ -13,6 +13,11 @@
   outline: none;
 }
 
+.borderless-input {
+  border: none;
+  outline: none;
+}
+
 .player-wrapper {
   position: relative;
   padding-top: 56.25% /* Player ratio: 100 / (1280 / 720) */

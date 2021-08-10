@@ -1,6 +1,6 @@
 {
   "name": "software-repository-web-app",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.6",
@@ -10,6 +10,7 @@
     "bootstrap": "^4.6.0",
     "dayjs": "^1.10.6",
     "firebase": "^8.8.1",
+    "gh-pages": "^3.2.3",
     "lodash": "^4.17.21",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
@@ -25,6 +26,9 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "deploy-test-repo": "cross-env GENERATE_SOURCEMAP=false npm run build && gh-pages -r https://github.com/JonathanLeeWH/software-repository-web-app-test.git -b master -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -51,6 +55,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.13.0",
+    "cross-env": "^7.0.3",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
@@ -58,5 +63,6 @@
     "eslint-plugin-react-hooks": "^4.0.0",
     "jquery": "^3.6.0",
     "typescript": "^4.3.5"
-  }
+  },
+  "homepage": "https://jonathanleewh.github.io/software-repository-web-app-test/"
 }

@@ -15,6 +15,8 @@ import {
   Button,
   Card,
   Form,
+  OverlayTrigger,
+  Tooltip,
 } from 'react-bootstrap';
 import { useHistory, useParams } from 'react-router-dom';
 import {
@@ -267,23 +269,47 @@ const SoftwareInformationPage = () => {
                         </Form.Group>
                       </Form.Row>
                     </Form>
-                    <Button
-                      className="mr-2"
-                      variant="outline-primary"
-                      href={`https://twitter.com/${softwareObject.twitterUsername}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
+
+                    <OverlayTrigger
+                      overlay={(
+                        <Tooltip>
+                          {softwareObject.twitterUsername.length > 0
+                            ? 'Access Software Twitter'
+                            : 'Software Twitter Not found'}
+                        </Tooltip>
+                      )}
                     >
-                      <AiOutlineTwitter /> Software Twitter
-                    </Button>
-                    <Button
-                      variant="outline-primary"
-                      href={softwareObject.homePage}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      <span className="d-inline-block">
+                        <Button
+                          className="mr-2"
+                          variant="outline-primary"
+                          href={`https://twitter.com/${softwareObject.twitterUsername}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          disabled={softwareObject.twitterUsername.length === 0}
+                        >
+                          <AiOutlineTwitter /> Software Twitter
+                        </Button>
+                      </span>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                      overlay={(
+                        <Tooltip>
+                          Access Software Homepage
+                        </Tooltip>
+                      )}
                     >
-                      <AiOutlineHome /> Software Homepage
-                    </Button>
+                      <span className="d-inline-block">
+                        <Button
+                          variant="outline-primary"
+                          href={softwareObject.homePage}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <AiOutlineHome /> Software Homepage
+                        </Button>
+                      </span>
+                    </OverlayTrigger>
                   </Card.Text>
                 </Card.Body>
               </Card>

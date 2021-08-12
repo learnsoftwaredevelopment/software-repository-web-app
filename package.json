@@ -1,17 +1,34 @@
 {
   "name": "software-repository-web-app",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.1.2",
     "@testing-library/user-event": "^12.2.2",
+    "axios": "^0.21.0",
+    "bootstrap": "^4.6.0",
+    "dayjs": "^1.10.6",
+    "firebase": "^8.8.1",
+    "gh-pages": "^3.2.3",
+    "lodash": "^4.17.21",
+    "prop-types": "^15.7.2",
     "react": "^17.0.1",
+    "react-bootstrap": "^1.6.1",
+    "react-bootstrap-typeahead": "^5.2.0",
     "react-dom": "^17.0.1",
-    "react-scripts": "4.0.0",
+    "react-helmet-async": "^1.0.9",
+    "react-icons": "^4.2.0",
+    "react-player": "^2.9.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^4.0.3",
+    "validator": "^13.6.0",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "deploy-test-repo": "cross-env GENERATE_SOURCEMAP=false npm run build && gh-pages -r https://github.com/JonathanLeeWH/software-repository-web-app-test.git -b master -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -37,10 +54,14 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.13.0",
+    "cross-env": "^7.0.3",
     "eslint-config-airbnb": "^18.2.1",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.24.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.21.5",
-    "eslint-plugin-react-hooks": "^4.0.0"
+    "eslint-plugin-react-hooks": "^4.0.0",
+    "jquery": "^3.6.0",
+    "typescript": "^4.3.5"
   }
 }

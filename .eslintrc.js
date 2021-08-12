@@ -26,5 +26,10 @@ module.exports = {
     'react/react-in-jsx-scope': 'off', // Not required in React 17 with JSX Transformation
     'react/jsx-one-expression-per-line': 'off',
     'import/no-extraneous-dependencies': 'off',
+    'import/prefer-default-export': 'off',
+    'linebreak-style': [
+      'error',
+      process.platform === 'win32' ? 'windows' : 'unix',
+    ],
   },
 };

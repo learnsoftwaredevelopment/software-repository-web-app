@@ -279,7 +279,7 @@ const SoftwareInformationPage = () => {
                         </Tooltip>
                       )}
                     >
-                      <span className="d-inline-block">
+                      <span className="d-inline-block mt-2">
                         <Button
                           className="mr-2"
                           variant="outline-primary"
@@ -293,13 +293,9 @@ const SoftwareInformationPage = () => {
                       </span>
                     </OverlayTrigger>
                     <OverlayTrigger
-                      overlay={(
-                        <Tooltip>
-                          Access Software Homepage
-                        </Tooltip>
-                      )}
+                      overlay={<Tooltip>Access Software Homepage</Tooltip>}
                     >
-                      <span className="d-inline-block">
+                      <span className="d-inline-block mt-2">
                         <Button
                           variant="outline-primary"
                           href={softwareObject.homePage}
@@ -310,6 +306,7 @@ const SoftwareInformationPage = () => {
                         </Button>
                       </span>
                     </OverlayTrigger>
+
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -414,7 +411,7 @@ const SoftwareInformationPage = () => {
               </Card>
             </Col>
           </Row>
-          <Row className="justify-content-center mt-5 text-right">
+          <Row className="justify-content-center mt-4 mb-3 text-right">
             <Col md={10} id="edit-delete-buttons">
               <Button
                 className="mr-2"

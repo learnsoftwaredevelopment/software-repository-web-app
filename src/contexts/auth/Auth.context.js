@@ -3,9 +3,10 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { firebase, auth } from '../../firebase/firebase.utils';
+import * as firebaseUtils from '../../firebase/firebase.utils';
 
 const AuthContext = createContext();
+const { auth } = firebaseUtils;
 
 const useAuth = () => useContext(AuthContext);
 
@@ -37,33 +38,36 @@ const AuthProvider = ({ children }) => {
   };
 
   const register = async (email, password, name = '', username) => {
-    const userCredentials = await auth.createUserWithEmailAndPassword(
+    const userCredentials = await firebaseUtils.createUserWithEmailAndPassword(
+      auth,
       email,
       password,
     );
-    await userCredentials.user.updateProfile({
+    await firebaseUtils.updateProfile(userCredentials.user, {
       displayName: name,
     });
-    await userCredentials.user.sendEmailVerification();
+    await firebaseUtils.sendEmailVerification(userCredentials.user);
     await setUsernameBackend(username);
   };
 
-  const login = (email, password) => auth.signInWithEmailAndPassword(email, password);
+  const login = (email, password) => (
+    firebaseUtils.signInWithEmailAndPassword(auth, email, password)
+  );
 
   const logout = async () => {
     await auth.signOut();
     setCustomClaims(null);
   };
 
-  const resetPassword = (email) => auth.sendPasswordResetEmail(email);
+  const resetPassword = (email) => firebaseUtils.sendPasswordResetEmail(auth, email);
 
   const reauthenticateWithCredential = (email, password) => {
-    const credential = firebase.auth.EmailAuthProvider.credential(
+    const credential = firebaseUtils.EmailAuthProvider.credential(
       email,
       password,
     );
 
-    return currentUser.reauthenticateWithCredential(credential);
+    return firebaseUtils.reauthenticateWithCredential(currentUser, credential);
   };
 
   const updatePassword = async (currentPassword, newPassword) => {
@@ -71,10 +75,10 @@ const AuthProvider = ({ children }) => {
       currentUser.email,
       currentPassword,
     );
-    await userCredential.user.updatePassword(newPassword);
+    await firebaseUtils.updatePassword(userCredential.user, newPassword);
   };
 
-  const updateProfile = (name, photoUrl) => currentUser.updateProfile({
+  const updateProfile = (name, photoUrl) => firebaseUtils.updateProfile(currentUser, {
     displayName: name,
     photoURL: photoUrl,
   });
@@ -113,7 +117,7 @@ const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const unSubscribe = auth.onAuthStateChanged((user) => {
+    const unSubscribe = firebaseUtils.onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       if (user) {
         user.getIdTokenResult().then((idTokenResult) => {

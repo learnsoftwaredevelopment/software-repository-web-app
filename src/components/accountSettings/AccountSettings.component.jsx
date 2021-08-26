@@ -28,9 +28,17 @@ const AccountSettings = () => {
 
     setValidated(false);
 
+    if (oldPassword === newPassword) {
+      handleNotification(
+        'Please ensure that the new password is different from the old password.',
+        'danger',
+      );
+      return false;
+    }
+
     if (newPassword !== confirmNewPassword) {
       handleNotification(
-        'Please ensure the new password and confirm new password matches.',
+        'Please ensure that the new password and confirm new password matches.',
         'danger',
       );
       return false;

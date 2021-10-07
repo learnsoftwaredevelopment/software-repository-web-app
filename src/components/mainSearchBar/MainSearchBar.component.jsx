@@ -5,6 +5,7 @@ import { InputGroup } from 'react-bootstrap';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useHistory } from 'react-router-dom';
+import { parseSoftwarePlatform } from '../../utils/utils';
 
 const MainSearchBar = () => {
   const cacheRef = useRef({});
@@ -104,7 +105,7 @@ const MainSearchBar = () => {
             <div key={option.id}>
               <span>{_.startCase(option.name)}</span>
               <div>
-                <small>{`Version: ${option.version} Platform: ${option.platform}`}</small>
+                <small>{`Version: ${option.version} Platform: ${parseSoftwarePlatform(option.platform)}`}</small>
               </div>
             </div>
           )}

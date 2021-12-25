@@ -19,6 +19,7 @@ import NotFoundPage from './pages/notFoundPage/NotFoundPage.component';
 import './App.css';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import EditSoftwarePage from './pages/EditSoftwarePage/EditSoftwarePage.component';
+import DemoNotification from './components/demoNotification/DemoNotification.component';
 
 function App() {
   const {
@@ -39,6 +40,7 @@ function App() {
         && !customClaims.username ? (
           <UsernamePrompt />
           ) : null}
+        {process.env.REACT_APP_IS_DEMO === 'true' ? <DemoNotification /> : null}
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route exact path="/login">

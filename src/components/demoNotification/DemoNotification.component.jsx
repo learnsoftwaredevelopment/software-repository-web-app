@@ -26,7 +26,7 @@ const DemoNotification = () => {
             <b>
               <u>free instance</u>
             </b>{' '}
-            of <b>Heroku</b> hence, It may take <u>a few seconds</u> for the
+            of <b>Heroku</b> hence, It may take <u>around 10 seconds (Heroku estimate)</u> for the
             backend server to start up resulting in a possibly slight delay in
             sample data retrieved.
             <p className="text-muted">

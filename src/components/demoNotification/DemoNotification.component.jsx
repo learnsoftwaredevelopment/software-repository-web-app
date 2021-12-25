@@ -9,11 +9,11 @@ const DemoNotification = () => {
 
   return (
     <>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Notice</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="text-justify">
           <p>
             This is a{' '}
             <strong>
@@ -26,9 +26,10 @@ const DemoNotification = () => {
             <b>
               <u>free instance</u>
             </b>{' '}
-            of <b>Heroku</b> hence, It may take <u>around 10 seconds (Heroku estimate)</u> for the
-            backend server to start up resulting in a possibly slight delay in
-            sample data retrieved.
+            of <b>Heroku</b> hence, It may take{' '}
+            <u>around 10 seconds (Heroku estimate)</u> for the backend server to
+            start up resulting in a possibly slight delay in sample data
+            retrieved.
             <p className="text-muted">
               The backend server was originally hosted in a free instance of{' '}
               <b>Microsoft Azure</b> but the free limits was exceeded hence,
